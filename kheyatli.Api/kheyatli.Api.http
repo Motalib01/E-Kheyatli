@@ -1,0 +1,6 @@
+@kheyatli.Api_HostAddress = http://localhost:5216
+
+GET {{kheyatli.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
