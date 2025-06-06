@@ -1,8 +1,10 @@
 ﻿using System.Text;
 using kheyatli.Api.Data;
+using kheyatli.Api.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using static kheyatli.Api.Program;
 
 namespace kheyatli.Api.Startup;
 
@@ -17,31 +19,20 @@ public static class DependenciesConfig
 
         builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+        builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-        //builder.Services.AddScoped<IFileService, FileService>();
+        builder.Services.AddScoped<TokenService>();
 
-        //// Add Identity
-        //builder.Services.AddIdentity<User, IdentityRole>()
-        //    .AddEntityFrameworkStores<ApplicationDbContext>()
-        //    .AddDefaultTokenProviders();
 
-        //// Configure JWT Authentication
-        //builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-        //    .AddJwtBearer(options =>
-        //    {
-        //        options.TokenValidationParameters = new TokenValidationParameters
-        //        {
-        //            ValidateIssuer = true,
-        //            ValidateAudience = true,
-        //            ValidateLifetime = true,
-        //            ValidateIssuerSigningKey = true,
-        //            ValidIssuer = builder.Configuration["Jwt:Issuer"],
-        //            ValidAudience = builder.Configuration["Jwt:Audience"],
-        //            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:SecretKey"]))
-        //        };
-        //    });
-
-        //builder.Services.AddAuthorization();
+        // Register Application Services
+        builder.Services.AddScoped<IClientService, ClientService>();
+        builder.Services.AddScoped<ITailorService, TailorService>();
+        builder.Services.AddScoped<IProductService, ProductService>();
+        builder.Services.AddScoped<IOrderService, OrderService>();
+        builder.Services.AddScoped<IMeasurementsGuideService, MeasurementsGuideService>();
+        builder.Services.AddScoped<IChatService, ChatService>();
+        builder.Services.AddScoped<IUserService, UserService>();
+        builder.Services.AddScoped<IAdminService, AdminService>();
 
 
 

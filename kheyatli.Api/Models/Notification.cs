@@ -6,5 +6,5 @@ public class Notification : Base
     public string Content { get; set; }
 
     public Guid UserId { get; set; }
-    public User User { get; set; }
+    public User? User { get; set; }
 }

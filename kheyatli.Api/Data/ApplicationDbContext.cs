@@ -16,6 +16,8 @@ public class ApplicationDbContext: DbContext
     public DbSet<Portfolio> Portfolios { get; set; }
     public DbSet<MeasurementsGuide> MeasurementsGuides { get; set; }
     public DbSet<Product> Products { get; set; }
+    public DbSet<ProductImage> ProductImages { get; set; }
+
     public DbSet<ProductMeasurement> ProductMeasurements { get; set; }
     public DbSet<Order> Orders { get; set; }
     public DbSet<Chat> Chats { get; set; }

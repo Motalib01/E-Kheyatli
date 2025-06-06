@@ -4,5 +4,6 @@
     Confirmed,
     InProgress,
     Completed,
-    Cancelled
+    Cancelled,
+    Delivered
 }

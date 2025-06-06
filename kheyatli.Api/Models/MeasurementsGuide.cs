@@ -7,5 +7,5 @@ public class MeasurementsGuide : Base
     public string Title { get; set; }
     public string Content { get; set; }
 
-    public Tailor Tailor { get; set; }
+    public Tailor? Tailor { get; set; }
 }

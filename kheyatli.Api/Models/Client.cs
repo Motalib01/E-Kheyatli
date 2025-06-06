@@ -8,8 +8,8 @@ public class Client : Base
     public bool IsActive { get; set; } = true;
     public DateTime CreatedAt { get; set; }
 
-    public User User { get; set; }
+    public User? User { get; set; }
 
-    public ICollection<Order> Orders { get; set; }
+    public ICollection<Order>? Orders { get; set; }
     public ICollection<Chat> Chats { get; set; }
 }

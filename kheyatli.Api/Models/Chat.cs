@@ -8,7 +8,7 @@ public class Chat : Base
 
     public DateTime CreatedAt { get; set; }
 
-    public Client Client { get; set; }
-    public Tailor Tailor { get; set; }
+    public Client? Client { get; set; }
+    public Tailor? Tailor { get; set; }
     public ICollection<ChatMessage> Messages { get; set; }
 }

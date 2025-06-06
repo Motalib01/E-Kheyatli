@@ -11,5 +11,10 @@ public class PortfolioConfiguration : IEntityTypeConfiguration<Portfolio>
             .WithOne(t => t.Portfolio)
             .HasForeignKey<Tailor>(t => t.PortfolioId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasMany(p=>p.Products)
+            .WithOne(r=>r.Portfolio)
+            .HasForeignKey(r => r.PortfolioId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

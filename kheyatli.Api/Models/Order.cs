@@ -8,8 +8,6 @@ public class Order : Base
     public OrderStatus Status { get; set; }
     public DateTime OrderDate { get; set; }
     public decimal Price { get; set; }
-
-    public bool IsPaid { get; set; }
     public DateTime? PaidAt { get; set; }
 
     public string DeliveryAddress { get; set; }
@@ -20,7 +18,7 @@ public class Order : Base
     public DateTime? UpdatedAt { get; set; }
     public DateTime? CancelledAt { get; set; }
 
-    public Client Client { get; set; }
-    public Tailor Tailor { get; set; }
-    public ICollection<ProductMeasurement> ProductMeasurements { get; set; }
+    public Client? Client { get; set; }
+    public Tailor? Tailor { get; set; }
+    public ICollection<ProductMeasurement>? ProductMeasurements { get; set; }
 }

@@ -10,8 +10,8 @@ public class ProductMeasurement : Base
     public string Value { get; set; } 
     public string Notes { get; set; }
 
-    public Portfolio Portfolio { get; set; }
-    public Order Order { get; set; }
-    public Product Product { get; set; }
+    public Portfolio? Portfolio { get; set; }
+    public Order? Order { get; set; }
+    public Product? Product { get; set; }
 
 }

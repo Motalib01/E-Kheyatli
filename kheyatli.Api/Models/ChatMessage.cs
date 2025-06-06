@@ -7,5 +7,5 @@ public class ChatMessage : Base
     public string Message { get; set; }
     public DateTime SentAt { get; set; }
 
-    public Chat Chat { get; set; }
+    public Chat? Chat { get; set; }
 }
