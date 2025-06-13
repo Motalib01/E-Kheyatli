@@ -3,7 +3,7 @@
 public class Tailor : Base
 {
     public Guid UserId { get; set; }
-    public Guid PortfolioId { get; set; }
+    public Guid? PortfolioId { get; set; }
 
     public string? Brand { get; set; }
     public string? Bio { get; set; }

@@ -5,9 +5,9 @@ public class Order : Base
     public Guid ClientId { get; set; }
     public Guid TailorId { get; set; }
 
-    public OrderStatus Status { get; set; }
-    public DateTime OrderDate { get; set; }
-    public decimal Price { get; set; }
+    public OrderStatus? Status { get; set; }
+    public DateTime? OrderDate { get; set; }
+    public decimal? Price { get; set; }
     public DateTime? PaidAt { get; set; }
 
     public string DeliveryAddress { get; set; }

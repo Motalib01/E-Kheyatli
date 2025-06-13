@@ -4,7 +4,7 @@ public class TailorDTO
 {
     public Guid Id { get; set; }
     public Guid UserId { get; set; }
-    public Guid PortfolioId { get; set; }
+    public Guid? PortfolioId { get; set; }
     public string Brand { get; set; }
     public string Bio { get; set; }
     public string Address { get; set; }

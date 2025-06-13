@@ -1,6 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Text.Json.Serialization;
 using kheyatli.Api.Startup;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.FileProviders;
@@ -16,6 +17,22 @@ namespace kheyatli.Api
             var configuration = builder.Configuration;
 
             builder.AddDependencies();
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll", builder =>
+                    builder.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader());
+            });
+
+            builder.Services
+                .AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    // Convert enum values to and from their string names (e.g., "Admin" instead of 1)
+                    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                });
+
 
             var jwtSettings = configuration.GetSection("JwtSettings").Get<JwtSettings>();
             builder.Services.AddSingleton(jwtSettings);
@@ -86,6 +103,8 @@ namespace kheyatli.Api
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseCors("AllowAll");
 
             app.MapControllers();
 

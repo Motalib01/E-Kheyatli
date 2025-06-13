@@ -1,6 +1,6 @@
 ﻿public enum UserRole
 {
-    Admin,
-    Tailor, 
-    Client
+    Admin = 1,
+    Tailor = 2, 
+    Client = 3
 }
