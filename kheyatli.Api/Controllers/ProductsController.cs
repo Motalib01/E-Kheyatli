@@ -13,52 +13,122 @@ public class ProductsController : BaseController<Product>
     public ProductsController(IUnitOfWork uow, ApplicationDbContext context) : base(uow, uow.Products)
     {
         _context = context;
+    }
 
+    [HttpGet("{productId:guid}/productWithImages")]
+    public async Task<IActionResult> GetProductWithImages(Guid productId)
+    {
+        var product = await _context.Products
+            .Include(p => p.Images)
+            .Include(p => p.Tailor)
+            .Include(p => p.Portfolio)
+            .FirstOrDefaultAsync(p => p.Id == productId);
+
+        if (product == null)
+            return NotFound(new { Message = "Product not found" });
+
+        var baseUrl = $"{Request.Scheme}://{Request.Host}";
+
+        var result = new
+        {
+            product.Id,
+            product.Name,
+            product.FabricPreferences,
+            product.StyleReferences,
+            product.Quote,
+            product.Notes,
+            Tailor = product.Tailor != null ? new
+            {
+                product.Tailor.Id,
+                product.Tailor.Brand,
+                product.Tailor.Bio
+            } : null,
+            Images = product.Images.Select(img => new
+            {
+                img.Id,
+                ImageUrl = $"{baseUrl}{img.ImageUrl}"
+            }),
+            Portfolio = product.Portfolio != null ? new
+            {
+                product.Portfolio.Id
+            } : null
+        };
+
+        return Ok(result);
     }
 
     [HttpPost("{productId}/images")]
     public async Task<IActionResult> UploadImages(Guid productId, List<IFormFile> files)
     {
-        var product = await _context.Products.Include(p => p.Images).FirstOrDefaultAsync(p => p.Id == productId);
-        if (product == null)
-            return NotFound("Product not found");
+        var productExists = await _context.Products.AnyAsync(p => p.Id == productId);
+        if (!productExists) return NotFound(new { Message = "Product not found" });
 
+        var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".webp" };
         var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
-        if (!Directory.Exists(uploadsFolder))
-            Directory.CreateDirectory(uploadsFolder);
-
-        var uploadedImages = new List<object>();
+        Directory.CreateDirectory(uploadsFolder);
 
         foreach (var file in files)
         {
-            var fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
+            var extension = Path.GetExtension(file.FileName).ToLower();
+            if (!allowedExtensions.Contains(extension))
+                return BadRequest(new { Message = $"Invalid file type: {extension}" });
+
+            var fileName = $"{Guid.NewGuid()}{extension}";
             var filePath = Path.Combine(uploadsFolder, fileName);
 
-            using (var stream = new FileStream(filePath, FileMode.Create))
-            {
-                await file.CopyToAsync(stream);
-            }
-
-            var imageUrl = $"/uploads/{fileName}";
+            using var stream = new FileStream(filePath, FileMode.Create);
+            await file.CopyToAsync(stream);
 
             var productImage = new ProductImage
             {
                 Id = Guid.NewGuid(),
                 ProductId = productId,
-                ImageUrl = imageUrl
+                ImageUrl = $"/uploads/{fileName}"
             };
-
             _context.ProductImages.Add(productImage);
-            uploadedImages.Add(new { productImage.Id, productImage.ImageUrl });
         }
 
         await _context.SaveChangesAsync();
 
+        var baseUrl = $"{Request.Scheme}://{Request.Host}";
+
+        var images = await _context.ProductImages
+            .Where(img => img.ProductId == productId)
+            .Select(img => new
+            {
+                img.Id,
+                ImageUrl = $"{baseUrl}{img.ImageUrl}"
+            })
+            .ToListAsync();
+
         return Ok(new
         {
             Message = "Images uploaded successfully",
-            Images = uploadedImages
+            Images = images
         });
+    }
+
+
+
+    [HttpGet("{productId}/images")]
+    public async Task<IActionResult> GetImagesByProductId(Guid productId)
+    {
+        var product = await _context.Products
+            .Include(p => p.Images)
+            .FirstOrDefaultAsync(p => p.Id == productId);
+
+        if (product == null)
+            return NotFound(new { Message = "Product not found" });
+
+        var baseUrl = $"{Request.Scheme}://{Request.Host}";
+
+        var images = product.Images.Select(img => new
+        {
+            img.Id,
+            ImageUrl = $"{baseUrl}{img.ImageUrl}"
+        });
+
+        return Ok(images);
     }
 
     [HttpGet("portfolio/{portfolioId}")]
@@ -72,11 +142,14 @@ public class ProductsController : BaseController<Product>
             .ToListAsync();
 
         if (products == null || !products.Any())
-            return NotFound("No products found for this portfolio.");
+            return NotFound(new { Message = "No products found for this portfolio." });
+
+        var baseUrl = $"{Request.Scheme}://{Request.Host}";
 
         var result = products.Select(p => new
         {
             p.Id,
+            p.Name,
             p.FabricPreferences,
             p.StyleReferences,
             p.Quote,
@@ -87,10 +160,10 @@ public class ProductsController : BaseController<Product>
                 p.Tailor.Brand,
                 p.Tailor.Bio
             } : null,
-            Images = p.Images?.Select(img => new
+            Images = p.Images.Select(img => new
             {
                 img.Id,
-                img.ImageUrl
+                ImageUrl = $"{baseUrl}{img.ImageUrl}"
             }),
             Portfolio = new
             {
@@ -100,6 +173,4 @@ public class ProductsController : BaseController<Product>
 
         return Ok(result);
     }
-
-
 }

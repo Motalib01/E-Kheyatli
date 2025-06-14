@@ -4,6 +4,7 @@ public class ProductDTO
 {
     public Guid Id { get; set; }
     public Guid TailorId { get; set; }
+    public string Name { get; set; }
     public string FabricPreferences { get; set; }
     public string StyleReferences { get; set; }
     public string Quote { get; set; }
