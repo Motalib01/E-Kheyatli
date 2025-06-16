@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using kheyatli.Api.Data;
 
@@ -11,9 +12,11 @@ using kheyatli.Api.Data;
 namespace kheyatli.Api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250614162833_review")]
+    partial class review
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -303,20 +306,8 @@ namespace kheyatli.Api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<float?>("Chest")
-                        .HasColumnType("real");
-
-                    b.Property<float?>("Height")
-                        .HasColumnType("real");
-
-                    b.Property<float?>("Hip")
-                        .HasColumnType("real");
-
-                    b.Property<float?>("Inseam")
-                        .HasColumnType("real");
-
-                    b.Property<float?>("Notes")
-                        .HasColumnType("real");
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("OrderId")
                         .HasColumnType("uniqueidentifier");
@@ -327,11 +318,11 @@ namespace kheyatli.Api.Migrations
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<float?>("SleeveLength")
-                        .HasColumnType("real");
+                    b.Property<int?>("Type")
+                        .HasColumnType("int");
 
-                    b.Property<float?>("Waist")
-                        .HasColumnType("real");
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -359,6 +350,9 @@ namespace kheyatli.Api.Migrations
                     b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid?>("OrderId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int?>("Rate")
                         .HasColumnType("int");
 
@@ -368,6 +362,8 @@ namespace kheyatli.Api.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ClientId");
+
+                    b.HasIndex("OrderId");
 
                     b.HasIndex("TailorId");
 
@@ -463,7 +459,7 @@ namespace kheyatli.Api.Migrations
             modelBuilder.Entity("Category", b =>
                 {
                     b.HasOne("Tailor", "Tailor")
-                        .WithOne("Category")
+                        .WithOne("Gategory")
                         .HasForeignKey("Category", "TailorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -618,6 +614,10 @@ namespace kheyatli.Api.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("Order", "Order")
+                        .WithMany()
+                        .HasForeignKey("OrderId");
+
                     b.HasOne("Tailor", "Tailor")
                         .WithMany()
                         .HasForeignKey("TailorId")
@@ -625,6 +625,8 @@ namespace kheyatli.Api.Migrations
                         .IsRequired();
 
                     b.Navigation("Client");
+
+                    b.Navigation("Order");
 
                     b.Navigation("Tailor");
                 });
@@ -680,9 +682,9 @@ namespace kheyatli.Api.Migrations
 
             modelBuilder.Entity("Tailor", b =>
                 {
-                    b.Navigation("Category");
-
                     b.Navigation("Chats");
+
+                    b.Navigation("Gategory");
 
                     b.Navigation("MeasurementGuides");
 

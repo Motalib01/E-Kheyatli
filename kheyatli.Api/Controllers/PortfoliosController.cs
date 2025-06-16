@@ -28,6 +28,7 @@ public class PortfoliosController : BaseController<Portfolio> {
         var result = products.Select(p => new
         {
             p.Id,
+            p.Name,
             p.FabricPreferences,
             p.StyleReferences,
             p.Quote,
@@ -68,6 +69,7 @@ public class PortfoliosController : BaseController<Portfolio> {
         var result = products.Select(p => new
         {
             p.Id,
+            p.Name,
             p.FabricPreferences,
             p.StyleReferences,
             p.Quote,

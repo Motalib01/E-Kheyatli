@@ -51,4 +51,21 @@ public class TailorsController : BaseController<Tailor>
         var guides = await _tailorService.GetMyMeasurementGuidesAsync(tailorId);
         return Ok(guides);
     }
+
+    [HttpGet("with-reviews")]
+    public async Task<IActionResult> GetAllTailorsWithReviews()
+    {
+        var tailorsWithReviews = await _tailorService.GetAllTailorsWithReviewsAsync();
+        return Ok(tailorsWithReviews);
+    }
+
+    [HttpGet("{tailorId:guid}/with-reviews")]
+    public async Task<IActionResult> GetTailorWithReviews(Guid tailorId)
+    {
+        var tailorWithReviews = await _tailorService.GetTailorWithReviewsAsync(tailorId);
+        if (tailorWithReviews == null)
+            return NotFound(new { Message = "Tailor not found." });
+
+        return Ok(tailorWithReviews);
+    }
 }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using kheyatli.Api.Data;
 
@@ -11,9 +12,11 @@ using kheyatli.Api.Data;
 namespace kheyatli.Api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250616111203_me")]
+    partial class me
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -303,20 +306,20 @@ namespace kheyatli.Api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<float?>("Chest")
-                        .HasColumnType("real");
+                    b.Property<string>("Chest")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<float?>("Height")
-                        .HasColumnType("real");
+                    b.Property<string>("Height")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<float?>("Hip")
-                        .HasColumnType("real");
+                    b.Property<string>("Hip")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<float?>("Inseam")
-                        .HasColumnType("real");
+                    b.Property<string>("Inseam")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<float?>("Notes")
-                        .HasColumnType("real");
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("OrderId")
                         .HasColumnType("uniqueidentifier");
@@ -327,11 +330,11 @@ namespace kheyatli.Api.Migrations
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<float?>("SleeveLength")
-                        .HasColumnType("real");
+                    b.Property<string>("SleeveLength")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<float?>("Waist")
-                        .HasColumnType("real");
+                    b.Property<string>("Waist")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

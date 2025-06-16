@@ -2,7 +2,6 @@
 
 public class Review : Base
 {
-    public Guid OrderId { get; set; }
     public Guid ClientId { get; set; }
     public Guid TailorId { get; set; }
 
@@ -10,7 +9,6 @@ public class Review : Base
     public string? Comment { get; set; }
     public DateTime? CreatedAt { get; set; }
 
-    public Order? Order { get; set; }
     public Client? Client { get; set; }
     public Tailor? Tailor { get; set; }
 }

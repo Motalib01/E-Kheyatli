@@ -11,7 +11,7 @@ public class Tailor : Base
 
     public bool? IsActive { get; set; } = true;
     public DateTime? CreatedAt { get; set; }
-    public Category? Gategory { get; set; }
+    public Category? Category { get; set; }
 
     public User? User { get; set; }
     public Portfolio? Portfolio { get; set; }
